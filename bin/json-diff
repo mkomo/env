@@ -1,0 +1,79 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+use JSON;
+
+my $json1;
+{
+  local $/; #Enable 'slurp' mode
+  open my $fh, "<", $ARGV[0];
+  $json1 = <$fh>;
+  close $fh;
+}
+
+my $data1 = decode_json($json1);
+
+ 
+my $json2;
+{
+  local $/; #Enable 'slurp' mode
+  open my $fh, "<", $ARGV[1];
+  $json2 = <$fh>;
+  close $fh;
+}
+
+my $data2 = decode_json($json2);
+
+#print to_json($data1);
+#print to_json($data2);
+deep_eq($data1, $data2);
+
+sub deep_eq {
+    my ($a, $b) = @_;
+    if (not defined $a || not defined $b){
+        print "not defined";
+        return 1;
+    } elsif (not ref $a){
+        if ($a eq $b){
+            return 1;
+        } else {
+            print "$a not equal to $b (not ref)\n";
+            return 0;
+        }
+    } elsif ($a eq $b){
+        print "$a equals $b\n";
+        return 1;
+    } elsif (ref $a ne ref $b) { 
+        return 0 
+    }
+    elsif (ref $a eq 'SCALAR') { $$a eq $$b }
+    elsif (ref $a eq 'ARRAY')  {
+        if (@$a == @$b) {
+            for (0..$#$a) {
+                if (! deep_eq($a->[$_], $b->[$_])) {
+                    print "'" . to_json($a->[$_], {pretty=>1, allow_nonref=>1}) . "' does not equal '" . to_json($b->[$_], {pretty=>1, allow_nonref=>1}) . "' at $_\n";
+                    return 0;
+                }
+            }
+            return 1;
+        } else {
+            print "a and b have different number of keys\n";
+            return 0;
+        }
+    }
+    elsif (ref $a eq 'HASH')   {
+        for (keys %$a) {
+            if (! deep_eq($a->{$_}, $b->{$_})) {
+                print "'" . to_json($a->{$_}, {pretty=>1, allow_nonref=>1}) . "' does not equal '" . to_json($b->{$_}, {pretty=>1, allow_nonref=>1}) . "' at $_\n";
+                return 0;
+            }
+        }
+        return 1;
+    } elsif (ref $a eq ref $b) { 
+        warn 'Cannot test '.(ref $a)."\n"; undef 
+    } else {
+        return 0
+    }
+}
+

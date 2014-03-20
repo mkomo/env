@@ -1,0 +1,34 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+use JSON;
+
+local $/=undef;
+my $data1 = decode_json(<>);
+
+flatten($data1, "");
+
+sub flatten {
+    my ($data, $prefix) = @_;
+    if (not defined $data || not defined $prefix){
+        print "<error>";
+        return 1;
+    } elsif (not ref $data){
+        print "$prefix$data\n";
+    } elsif (ref $data eq 'SCALAR') { 
+        print "$prefix$data\n";
+    }elsif (ref $data eq 'ARRAY') {
+        for (0..$#$data) {
+            flatten($data->[$_],"$prefix");
+        }
+    }
+    elsif (ref $data eq 'HASH')   {
+        for (keys %$data) {
+            flatten($data->{$_},(length($prefix) != 0 ? "$prefix\t" : "") ."$_\t");
+        }
+        return 1;
+    } else {
+        return 0
+    }
+}

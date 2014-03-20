@@ -1,0 +1,88 @@
+export EDITOR="vim"
+export VISUAL="vim"
+
+#git autocomplete
+source ~/bin/git-completion.bash
+
+#path setup
+export PATH=/home/mkomorowski/bin:$PATH
+
+GREEN='\[\e[0;32m\]'
+GREENB='\[\e[32;1m\]'
+STD='\[\e[0;0m\]'
+WHITE='\[\e[0;01;34m\]'
+
+HOSTCOLOR='\[\e[31;1m\]' #presumably prod
+case "$HOSTNAME" in
+	waits|*.corp.synacor.com|*.synbuf.*) HOSTCOLOR='\[\e[32;1m\]' ;;
+	*.dev.synacor.com|*.opal.synacor.com) HOSTCOLOR='\[\e[35;1m\]' ;;
+	*uat*) HOSTCOLOR='\[\e[36;1m\]' ;;
+esac
+
+if [ -f /var/lib/puppet/preprod ]; then
+	HOSTCOLOR='\[\e[1;34;41m\]'
+	HOSTSUFFIX="$STD (PREPROD)"
+fi
+
+function mkomoprompt {
+	EXITSTATUS="$?"
+	echo -ne "\033]0;${HOSTNAME}:${PWD/#$HOME/~}\007"
+	PS1="($EXITSTATUS) $GREENB\D{%F} \t $GREEN\u@$HOSTCOLOR\H$HOSTSUFFIX\n$WHITE$(pwd)$GREEN\$ $STD"
+
+#updated hist -r
+hist_entry=$(history 1)		    # grab the most recent command
+hist_entry="${hist_entry# *[0-9]*  }"	 # strip off the history line number
+timestamp="${hist_entry:0:19}"
+command="${hist_entry:20}"
+shell_id=`printf "%5d\n" $$ | sed "s/ /0/g"`
+if [ ${command%% *} == "cd" ]  # if its a cd command, we want the directory from which we changed
+then
+	dir=$OLDPWD
+else
+	dir=$PWD
+fi
+
+hist_line="$timestamp	$EXITSTATUS	$dir	$command"
+if [ -n "${LAST_HISTORY_ENTRY+x}" ] && [ "$hist_line" != "$LAST_HISTORY_ENTRY" ]; then
+	echo "$shell_id	$hist_line" >> ~/.bash_eternal_history;
+fi;
+export LAST_HISTORY_ENTRY="$hist_line"
+
+}
+
+#for changing the terminal title
+export PROMPT_COMMAND=mkomoprompt
+
+#hist registration
+export HISTTIMEFORMAT='%F %T '
+
+_sam_complete_func() 
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    opts=`sam ls`
+
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+}
+complete -F _sam_complete_func sam
+
+#mysql things
+export MYSQL_PS1="\u@\h [\d]> "
+
+_hdfs_complete_func() 
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    dir=`echo $cur | sed 's/[^\/]*$//'`
+    wildcard=`echo $cur | awk -F "/" '{ print $NF }'`
+    set -xv
+    opts=`hadoop fs -ls $dir 2>/dev/null | awk '{ if (NR!=1) { split($NF,arr,"/"); print arr[length(arr)](/^d/?"/":"") }}' | grep "^$wildcard"`
+    set +xv
+    COMPREPLY=( $(compgen -P "$dir" -W "${opts}" -- ${cur}) )
+}
+complete -F _hdfs_complete_func -o nospace hadoop
+
+##check for updates to git repo
+#if [ `git fetch --dry-run 2>&1 | wc -l` -gt 0 ]; then echo "changes to home-dir detected"; fi

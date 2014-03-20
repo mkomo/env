@@ -1,0 +1,12 @@
+#!/usr/bin/python
+
+import argparse
+
+parser = argparse.ArgumentParser(description='Join the given set of strings')
+parser.add_argument('strings', metavar='str', type=str, nargs='+',
+                   help='strings to concatenate')
+parser.add_argument('-s', metavar="sep", nargs='?', default='', help='separator')
+
+args = parser.parse_args()
+print args.s.join(args.strings)
+

@@ -1,0 +1,60 @@
+#shortcuts
+alias ll='ls -l --time-style="+%Y-%m-%d %H:%M:%S" --color=auto'
+alias la='ls -Al --time-style="+%Y-%m-%d %H:%M:%S" --color=auto'
+
+alias less='less -R'
+alias grep='grep --color=auto -I'
+
+alias psg='ps aux | grep'
+alias psstart='ps -eo pid,cmd,etime'
+
+#clears color formatting
+alias white='sed -r "s:\x1B\[[0-9;]*[mK]::g"'
+alias uncolor='sed -r "s:\x1B\[[0-9;]*[mK]::g"'
+
+alias date-iso='date +"%Y-%m-%dT%H:%M:%S%z"'
+
+function up(){ cd `for i in $(seq 1 $@); do echo -n "../"; done`; }
+
+function hl(){ sed "s/$1/\x1b[7m&\x1b[0m/g"; }
+
+function freq() { sort $* | uniq -c | sort -rn; }
+
+function urlencode(){ php -r "echo urlencode('$1');"; }
+
+function urldecode(){ php -r "echo urldecode('$1');"; }
+
+function wcps(){ perl -e 'while (<>) {$l++;if (time > $e) {$e=time;print "$l\n";$l=0}}'; }
+
+function sum() { [ -n "$1" ] || 1=1; awk "{s+=\$$1; print}END{print s}"; }
+
+function topgrep() { top -p $(echo $(pgrep $1) | sed -e "s/\s\+/,/");}
+
+function nthline() { sed -n "$1{p;q;}"; }
+
+alias fbl='find . -type l | (while read FN ; do test -e "$FN" || ls -ld "$FN"; done)'
+
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias gl='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ar %Cblue%s%Creset"'
+alias gll='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ai %Cblue%s%Creset"'
+alias gco='git checkout'
+alias ga='git add'
+alias gam='git ls-files -m | xargs git add'
+alias gs='git status'
+alias gbs='git bulk status'
+alias git-unmerged='git branch -a --no-merged master'
+
+export GIT_SERVER="repos.mkomo.com"
+export GIT_SERVER_REPO_PATH="/home/git/repos"
+alias ll-repos="ssh $GIT_SERVER 'ls -l $GIT_SERVER_REPO_PATH'"
+alias ls-repos="ssh $GIT_SERVER 'ls -1 $GIT_SERVER_REPO_PATH'"
+function clone-repos() { ssh $GIT_SERVER "ls -1 $GIT_SERVER_REPO_PATH" | grep "$1" | sed "s/\.git$//" | while read REPO; do git clone $GIT_HOST:$GIT_SERVER_REPO_PATH/$REPO; done;}
+
+alias vess='/usr/share/vim/vim7*/macros/less.sh'
+
+alias ppjson='perl -0007 -MJSON -ne "print to_json(from_json(\$_, {allow_nonref=>1}), {pretty=>1})"'
+
+alias nano='vim'
+
+alias recent-chats='find .purple/logs/jabber/*/*/*.html -mtime -1 | xargs ls -l'
