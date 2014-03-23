@@ -47,9 +47,9 @@ else
 	dir=$PWD
 fi 
 
-hist_line="$timestamp $dir\$ $command"
+hist_line="$timestamp	$EXITSTATUS	$dir	$command"
 if [ -n "${LAST_HISTORY_ENTRY+x}" ] && [ "$hist_line" != "$LAST_HISTORY_ENTRY" ]; then
-	echo "$shell_id $hist_line" >> ~/.bash_eternal_history;
+	echo "$shell_id	$hist_line" >> ~/.bash_eternal_history;
 fi; 
 export LAST_HISTORY_ENTRY="$hist_line"'
 			exit 0
