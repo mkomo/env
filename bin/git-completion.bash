@@ -1489,6 +1489,7 @@ _gitk ()
 }
 
 complete -o default -o nospace -F _git git
+complete -o default -o nospace -F _git_diff gd
 complete -o default -o nospace -F _gitk gitk
 
 # The following are necessary only for Cygwin, and only are needed

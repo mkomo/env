@@ -1,6 +1,9 @@
 #shortcuts
+alias l='ls -l'
 alias ll='ls -l --time-style="+%Y-%m-%d %H:%M:%S" --color=auto'
 alias la='ls -Al --time-style="+%Y-%m-%d %H:%M:%S" --color=auto'
+
+alias vi='vim'
 
 alias less='less -R'
 alias grep='grep --color=auto -I'
@@ -53,7 +56,7 @@ function clone-repos() { ssh $GIT_SERVER "ls -1 $GIT_SERVER_REPO_PATH" | grep "$
 
 alias vess='/usr/share/vim/vim7*/macros/less.sh'
 
-alias ppjson='perl -0007 -MJSON -ne "print to_json(from_json(\$_, {allow_nonref=>1}), {pretty=>1})"'
+#alias ppjson='perl -0007 -MJSON -ne "print to_json(from_json(\$_, {allow_nonref=>1}), {pretty=>1})"'
 
 alias nano='vim'
 

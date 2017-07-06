@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import json
+import collections
 
 #!/usr/bin/python
 
@@ -15,4 +16,4 @@ args = parser.parse_args()
 
 instring = args.infile.read()
 
-print json.dumps(json.loads(instring), indent=4)
+print json.dumps(json.loads(instring, object_pairs_hook=collections.OrderedDict), indent=2)

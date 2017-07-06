@@ -19,5 +19,6 @@ if ! shopt -oq posix; then
 fi
 
 # User specific aliases and functions
-source ~/bin/bash_aliases
-source ~/bin/bash_extras
+while read FILE; do 
+	source $FILE
+done < <(ls ~/bin/bash_*)

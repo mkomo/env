@@ -14,10 +14,12 @@ HIST_FILE="$HIST_HOME/$HIST_FILENAME"
 
 ALL_HIST_DIR="/nfshome/$LOGNAME/history"
 
-PAGER="tail -50"
+PAGER="cat"
+TAILER="tail -50"
 CURRENT_SHELL="cat"
+GREPPER="grep --color=always"
 
-while getopts "brf:g:Aacn:" OPTION
+while getopts "brf:g:Aacn:li" OPTION
 do
 	case $OPTION in
 		b)
@@ -45,12 +47,12 @@ then
 	dir=$OLDPWD
 else
 	dir=$PWD
-fi 
+fi
 
-hist_line="$timestamp	$EXITSTATUS	$dir	$command"
+hist_line="$timestamp $dir\$ $command"
 if [ -n "${LAST_HISTORY_ENTRY+x}" ] && [ "$hist_line" != "$LAST_HISTORY_ENTRY" ]; then
-	echo "$shell_id	$hist_line" >> ~/.bash_eternal_history;
-fi; 
+	echo "$shell_id $hist_line" >> ~/.bash_eternal_history;
+fi;
 export LAST_HISTORY_ENTRY="$hist_line"'
 			exit 0
 			;;
@@ -65,13 +67,19 @@ export LAST_HISTORY_ENTRY="$hist_line"'
 			PAGER="cat"
 			;;
 		a)
-			PAGER="cat"
+			TAILER="cat"
 			;;
 		c)
 			CURRENT_SHELL="egrep ^[0]*$PPID"
 			;;
 		n)
-			PAGER="tail -n $OPTARG"
+			TAILER="tail -n $OPTARG"
+            ;;
+		l)
+			PAGER="less -R"
+            ;;
+		i)
+			GREPPER="$GREPPER -i"
 	esac
 done
 
@@ -81,16 +89,16 @@ then
 	cd $ALL_HIST_DIR
 	if [ -z "$GREP" ]
 	then
-		GREP_COLORS="mt=" grep --color=always --with-filename "" * | $PAGER
+		GREP_COLORS="mt=" $GREPPER --with-filename "" * | $TAILER | $PAGER
 	else
-		grep --color=always --with-filename $GREP * | $PAGER
+		$GREPPER --with-filename $GREP * | $TAILER | $PAGER
 	fi
 else
 	if [ -z "$GREP" ]
 	then
-		cat $HIST_FILE | $CURRENT_SHELL | grep --color=always "" | $PAGER
+		cat $HIST_FILE | $CURRENT_SHELL | $GREPPER "" | $TAILER | $PAGER
 	else
-		cat $HIST_FILE | $CURRENT_SHELL | grep --color=always $GREP | $PAGER
+		cat $HIST_FILE | $CURRENT_SHELL | $GREPPER $GREP | $TAILER | $PAGER
 	fi
 fi
 exit $?

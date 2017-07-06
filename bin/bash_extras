@@ -5,7 +5,11 @@ export VISUAL="vim"
 source ~/bin/git-completion.bash
 
 #path setup
-export PATH=/home/mkomorowski/bin:$PATH
+export PATH=$HOME/bin:$PATH
+export PATH=$PATH:/opt/cassandra/bin
+export PATH=~/Downloads/datastax-ddc-3.9.0/bin/:$PATH
+
+bind '"\eR": reverse-search-history'
 
 GREEN='\[\e[0;32m\]'
 GREENB='\[\e[32;1m\]'
