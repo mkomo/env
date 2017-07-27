@@ -1,12 +1,21 @@
 #!/bin/bash
 
-export DISPLAY=:0.0
 echo -ne "$(date '+%Y-%m-%d\t%H:%M:%S%z')\t"
-if [[ "$(xset -q | grep Monitor)" == *"On" ]]; then
-	LINE=$(xprop -root _NET_ACTIVE_WINDOW)
-	ID=$(awk '{print $NF}' <<< $LINE);
-	xprop -id $ID WM_NAME WM_CLASS | tr "\n" "\t"
-	echo '-'
-else
-	echo -e "-\t-\tMONITOR_OFF"
-fi
+
+command -v xset >/dev/null 2>&1 && {
+	export DISPLAY=:0.0
+	if [[ "$(xset -q | grep Monitor)" == *"On" ]]; then
+		LINE=$(xprop -root _NET_ACTIVE_WINDOW)
+		ID=$(awk '{print $NF}' <<< $LINE);
+		xprop -id $ID WM_NAME WM_CLASS | tr "\n" "\t"
+		echo '-'
+	else
+		echo -e "-\t-\tMONITOR_OFF"
+	fi
+} || {
+	command -v osascript >/dev/null 2>&1 && {
+		python $HOME/bin/whatsupmac3 2>&1
+	} || {
+		echo "not found"
+	}
+}

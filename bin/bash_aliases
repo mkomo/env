@@ -48,12 +48,6 @@ alias gs='git status'
 alias gbs='git bulk status'
 alias git-unmerged='git branch -a --no-merged master'
 
-export GIT_SERVER="repos.mkomo.com"
-export GIT_SERVER_REPO_PATH="/home/git/repos"
-alias ll-repos="ssh $GIT_SERVER 'ls -l $GIT_SERVER_REPO_PATH'"
-alias ls-repos="ssh $GIT_SERVER 'ls -1 $GIT_SERVER_REPO_PATH'"
-function clone-repos() { ssh $GIT_SERVER "ls -1 $GIT_SERVER_REPO_PATH" | grep "$1" | sed "s/\.git$//" | while read REPO; do git clone $GIT_HOST:$GIT_SERVER_REPO_PATH/$REPO; done;}
-
 alias vess='/usr/share/vim/vim7*/macros/less.sh'
 
 #alias ppjson='perl -0007 -MJSON -ne "print to_json(from_json(\$_, {allow_nonref=>1}), {pretty=>1})"'
