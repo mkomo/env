@@ -1,0 +1,17 @@
+if [ "$(uname -s)" == "Darwin" ]; then
+  # the nested command in this command takes a long time to execute. Assume the value of $(brew --prefix coreutils)
+  #export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:$PATH"
+
+  #jenv init injects a command at every prompt which takes hundreds of milliseconds to execute. forego this, and instead update path manually.
+  #if which jenv > /dev/null; then eval "$(jenv init -)"; fi
+  export PATH="$HOME/.jenv/shims:${PATH}"
+  export JAVA_HOME=$(jenv javahome)
+  export JENV_FORCEJAVAHOME=true
+  if [ -e "$JAVA_HOME/bin/javac" ]
+  then
+    export JDK_HOME=$(jenv javahome)
+    export JENV_FORCEJDKHOME=true
+  fi
+fi
+
