@@ -24,7 +24,7 @@ HOSTCOLOR="`where -c`"
 function mkomoprompt {
 	EXITSTATUS="$?"
 	echo -ne "\033]0;${HOSTNAME}:${PWD/#$HOME/~}\007"
-	PS1="($EXITSTATUS) $GREENB\D{%F} \t $GREEN\u@$HOSTCOLOR\H$HOSTSUFFIX\n$WHITE$(pwd)$GREEN\$ $STD"
+	PS1="($EXITSTATUS) $GREENB\D{%F} \t $GREEN\u@$HOSTCOLOR\H$STD\n$WHITE$(pwd)$GREEN\$ $STD"
 	eval "$(hist -r)"
 }
 
