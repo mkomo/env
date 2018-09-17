@@ -9,6 +9,9 @@ export PATH=$HOME/bin:$PATH
 export PATH=$PATH:/opt/cassandra/bin
 export PATH=~/Downloads/datastax-ddc-3.9.0/bin/:$PATH
 
+# set the tab width to 4
+tabs 4
+
 bind '"\eR": reverse-search-history'
 
 GREEN='\[\e[0;32m\]'
@@ -16,17 +19,7 @@ GREENB='\[\e[32;1m\]'
 STD='\[\e[0;0m\]'
 WHITE='\[\e[0;01;34m\]'
 
-HOSTCOLOR='\[\e[31;1m\]' #presumably prod
-case "$HOSTNAME" in
-	waits|*.corp.synacor.com|*.synbuf.*) HOSTCOLOR='\[\e[32;1m\]' ;;
-	*.dev.synacor.com|*.opal.synacor.com) HOSTCOLOR='\[\e[35;1m\]' ;;
-	*uat*) HOSTCOLOR='\[\e[36;1m\]' ;;
-esac
-
-if [ -f /var/lib/puppet/preprod ]; then
-	HOSTCOLOR='\[\e[1;34;41m\]'
-	HOSTSUFFIX="$STD (PREPROD)"
-fi
+HOSTCOLOR="`where -c`"
 
 function mkomoprompt {
 	EXITSTATUS="$?"

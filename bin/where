@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#COLOR CONSTANTS
+COLOR_LOCAL='\[\e[32;1m\]'
+COLOR_DEV='\[\e[35;1m\]'
+COLOR_EC2='\[\e[42;1m\]'
+
+COLOR=false
+
+while getopts "c" OPTION
+do
+	case $OPTION in
+		c)
+			COLOR=true ;;
+	esac
+done
+
+if [ -f /sys/hypervisor/uuid ] && [ `head -c 3 /sys/hypervisor/uuid` == ec2 ]; then
+    $COLOR && echo -n "$COLOR_EC2" || echo ec2
+else
+    $COLOR && echo -n $COLOR_LOCAL || echo local
+fi
