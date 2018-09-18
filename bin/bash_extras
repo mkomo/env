@@ -9,10 +9,11 @@ export PATH=$HOME/bin:$PATH
 export PATH=$PATH:/opt/cassandra/bin
 export PATH=~/Downloads/datastax-ddc-3.9.0/bin/:$PATH
 
-# set the tab width to 4
-tabs -4
-
-if [ -n "$PS1" ]; then bind '"\eR": reverse-search-history'; fi
+if [ -n "$PS1" ]; then
+	# set the tab width to 4
+	tabs -4
+	bind '"\eR": reverse-search-history';
+fi
 
 GREEN='\[\e[0;32m\]'
 GREENB='\[\e[32;1m\]'
