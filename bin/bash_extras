@@ -7,7 +7,9 @@ source ~/bin/git-completion.bash
 #path setup
 export PATH=$HOME/bin:$PATH
 export PATH=$PATH:/opt/cassandra/bin
-export PATH=~/Downloads/datastax-ddc-3.9.0/bin/:$PATH
+
+export PATH=~/repos/dtk/:$PATH
+export DTK_MODPATH=~/repos/dtk/modules
 
 if [ -n "$PS1" ]; then
 	# set the tab width to 4
@@ -35,7 +37,7 @@ export PROMPT_COMMAND=mkomoprompt
 #hist registration
 export HISTTIMEFORMAT='%F %T '
 
-_sam_complete_func() 
+_sam_complete_func()
 {
     local cur prev opts
     COMPREPLY=()
@@ -49,7 +51,7 @@ complete -F _sam_complete_func sam
 #mysql things
 export MYSQL_PS1="\u@\h [\d]> "
 
-_hdfs_complete_func() 
+_hdfs_complete_func()
 {
     local cur prev opts
     COMPREPLY=()
