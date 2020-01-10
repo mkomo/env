@@ -16,9 +16,12 @@ if [ "$(uname -s)" == "Darwin" ]; then
     export JENV_FORCEJDKHOME=true
   fi
 
+  export NVM_DIR="$HOME/.nvm"
+    [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+    [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
   alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
   #the above alias seems to work better than this function: function chrome { open -a "Google Chrome" "$*"; }
   function finder { open -a "Finder" "$*"; }
 
 fi
-

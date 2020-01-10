@@ -17,7 +17,7 @@ alias uncolor='sed -r "s:\x1B\[[0-9;]*[mK]::g"'
 
 alias date-iso='date +"%Y-%m-%dT%H:%M:%S%z"'
 
-function addpath(){ [ -n "$1" ] && export PATH=$PATH:$PWD/$1 || (echo "USAGE: addpath <bin-dir>"; exit 1)}
+function addpath(){ [ -n "$1" ] && export PATH=$PATH:$(realpath $1) || (echo "USAGE: addpath <bin-dir>"; exit 1)}
 
 function up(){ cd `for i in $(seq 1 $@); do echo -n "../"; done`; }
 
