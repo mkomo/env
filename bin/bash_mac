@@ -1,6 +1,6 @@
 # vim: set filetype=sh :
 
-if [ "$(uname -s)" == "Darwin" ]; then
+if [[ "$(uname -s)" == "Darwin" ]]; then
   # the nested command in this command takes a long time to execute. Assume the value of $(brew --prefix coreutils)
   #export PATH="$(brew --prefix coreutils)/libexec/gnubin:/usr/local/bin:$PATH"
   export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:$PATH"
