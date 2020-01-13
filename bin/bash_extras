@@ -1,20 +1,35 @@
 export EDITOR="vim"
 export VISUAL="vim"
 
-#git autocomplete
-source ~/bin/git-completion.bash
-
 #path setup
 export PATH=$HOME/bin:$PATH
-export PATH=$PATH:/opt/cassandra/bin
 
 export PATH=~/repos/dtk/:$PATH
 export DTK_MODPATH=~/repos/dtk/modules
 
+BIND_CMD="bind"
+
+case $SHELL in
+*/zsh)
+   # assume Zsh
+    #git autocomplete
+    # source ~/bin/git-completion.zsh
+    zstyle ':completion:*:*:git:*' script ~/bin/.git-completion.zsh
+    BIND_CMD="bindkey"
+   ;;
+*/bash)
+   # assume Bash
+    #git autocomplete
+    source ~/bin/git-completion.bash
+    $BIND_CMD '"\eR": reverse-search-history';
+   ;;
+*)
+   # assume something else
+esac
+
 if [ -n "$PS1" ]; then
 	# set the tab width to 4
 	tabs -4
-	bind '"\eR": reverse-search-history';
 fi
 
 GREEN='\[\e[0;32m\]'
@@ -22,7 +37,7 @@ GREENB='\[\e[32;1m\]'
 STD='\[\e[0;0m\]'
 WHITE='\[\e[0;01;34m\]'
 
-HOSTCOLOR="`where -c`"
+HOSTCOLOR="`hosttype -c`"
 
 function mkomoprompt {
 	EXITSTATUS="$?"
@@ -37,33 +52,9 @@ export PROMPT_COMMAND=mkomoprompt
 #hist registration
 export HISTTIMEFORMAT='%F %T '
 
-_sam_complete_func()
-{
-    local cur prev opts
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    opts=`sam ls`
-
-    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-}
-complete -F _sam_complete_func sam
-
 #mysql things
 export MYSQL_PS1="\u@\h [\d]> "
 
-_hdfs_complete_func()
-{
-    local cur prev opts
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    dir=`echo $cur | sed 's/[^\/]*$//'`
-    wildcard=`echo $cur | awk -F "/" '{ print $NF }'`
-    set -xv
-    opts=`hadoop fs -ls $dir 2>/dev/null | awk '{ if (NR!=1) { split($NF,arr,"/"); print arr[length(arr)](/^d/?"/":"") }}' | grep "^$wildcard"`
-    set +xv
-    COMPREPLY=( $(compgen -P "$dir" -W "${opts}" -- ${cur}) )
-}
-complete -F _hdfs_complete_func -o nospace hadoop
 
 ##check for updates to git repo
 #if [ `git fetch --dry-run 2>&1 | wc -l` -gt 0 ]; then echo "changes to home-dir detected"; fi
