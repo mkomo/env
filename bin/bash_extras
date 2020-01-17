@@ -7,21 +7,20 @@ export PATH=$HOME/bin:$PATH
 export PATH=~/repos/dtk/:$PATH
 export DTK_MODPATH=~/repos/dtk/modules
 
-BIND_CMD="bind"
-
 case $SHELL in
 */zsh)
    # assume Zsh
     #git autocomplete
     # source ~/bin/git-completion.zsh
     zstyle ':completion:*:*:git:*' script ~/bin/.git-completion.zsh
-    BIND_CMD="bindkey"
+    bindkey "^[b" backward-word
+    bindkey "^[f" forward-word
    ;;
 */bash)
    # assume Bash
     #git autocomplete
     source ~/bin/git-completion.bash
-    $BIND_CMD '"\eR": reverse-search-history';
+    bind '"\eR": reverse-search-history';
    ;;
 *)
    # assume something else
