@@ -41,8 +41,8 @@ alias fbl='find . -type l | (while read FN ; do test -e "$FN" || ls -ld "$FN"; d
 
 alias gd='git diff'
 alias gdc='git diff --cached'
-alias gl='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ar %Cblue%s%Creset"'
-alias gll='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ai %Cblue%s%Creset"'
+alias gl='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ar %C(yellow)%s%Creset"'
+alias gll='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ai %C(yellow)%s%Creset"'
 alias gco='git checkout'
 alias ga='git add'
 alias gam='git ls-files -m | xargs git add'
