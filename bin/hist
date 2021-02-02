@@ -42,7 +42,7 @@ hist_entry="${hist_entry# *[0-9]*  }"	 # strip off the history line number
 timestamp="${hist_entry:0:19}"
 command="${hist_entry:20}"
 shell_id=`printf "%5d\n" $$ | sed "s/ /0/g"`
-if [ ${command%% *} == "cd" ]  # if its a cd command, we want the directory from which we changed
+if [ "${command%% *}" == "cd" ]  # if its a cd command, we want the directory from which we changed
 then
 	dir=$OLDPWD
 else
