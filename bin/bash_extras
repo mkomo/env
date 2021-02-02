@@ -15,6 +15,16 @@ case $SHELL in
     zstyle ':completion:*:*:git:*' script ~/bin/.git-completion.zsh
     bindkey "^[b" backward-word
     bindkey "^[f" forward-word
+    histcmd() {
+      EXITSTATUS="$?"
+      eval "$(hist -z)"
+      echo -e "\e]0;$HOSTNAME:${PWD/#$HOME/~}\007"
+    }
+    precmd_functions=(histcmd)
+    export PROMPT="
+%{$fg[white]%}(%?) %{$fg[yellow]%}%D %* %n@%B%M%b%{$fg[default]%}
+%{$fg[cyan]%}%B%/%b %#%{$fg[default]%} "
+    echo -e "\e]0;$HOSTNAME\007"
    ;;
 */bash)
    # assume Bash

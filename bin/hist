@@ -19,7 +19,7 @@ TAILER="tail -50"
 CURRENT_SHELL="cat"
 GREPPER="grep --color=always"
 
-while getopts "brf:g:Aacn:li" OPTION
+while getopts "brzf:g:Aacn:li" OPTION
 do
 	case $OPTION in
 		b)
@@ -42,7 +42,28 @@ hist_entry="${hist_entry# *[0-9]*  }"	 # strip off the history line number
 timestamp="${hist_entry:0:19}"
 command="${hist_entry:20}"
 shell_id=`printf "%5d\n" $$ | sed "s/ /0/g"`
-if [ ${command%% *} == "cd" ]  # if its a cd command, we want the directory from which we changed
+if [[ ${command%% *} == "cd" ]]  # if its a cd command, we want the directory from which we changed
+then
+	dir=$OLDPWD
+else
+	dir=$PWD
+fi
+
+hist_line="$timestamp	$EXITSTATUS	$dir	$command"
+if [ -n "${LAST_HISTORY_ENTRY+x}" ] && [ "$hist_line" != "$LAST_HISTORY_ENTRY" ]; then
+	echo "$shell_id	$hist_line" >> ~/.bash_eternal_history;
+fi;
+export LAST_HISTORY_ENTRY="$hist_line"'
+			exit 0
+			;;
+		z)
+			echo '
+hist_entry=$(history -i -1)		    # grab the most recent command
+hist_entry="${hist_entry# *[0-9]*  }"	 # strip off the history line number
+timestamp="${hist_entry:0:16}"
+command="${hist_entry:18}"
+shell_id=`printf "%5d\n" $$ | sed "s/ /0/g"`
+if [[ ${command%% *} == "cd" ]]  # if its a cd command, we want the directory from which we changed
 then
 	dir=$OLDPWD
 else
