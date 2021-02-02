@@ -10,6 +10,6 @@
 
 [core]
 	pager = less -FXRS -x4
-	excludesfile = /home/mkomorowski/.git-always-ignore
+	excludesFile = /Users/kommatth/.git-always-ignore
 [push]
 	default = simple
