@@ -41,13 +41,15 @@ alias fbl='find . -type l | (while read FN ; do test -e "$FN" || ls -ld "$FN"; d
 
 alias gd='git diff'
 alias gdc='git diff --cached'
-alias gl='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ar %Cblue%s%Creset"'
-alias gll='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ai %Cblue%s%Creset"'
+alias gl='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ar %C(yellow)%s%Creset"'
+alias gll='git log --graph --oneline --date-order --decorate --pretty=format:"%h%Cred%d%Creset %Cgreen%ae%Creset %ai %C(yellow)%s%Creset"'
 alias gco='git checkout'
 alias ga='git add'
 alias gam='git ls-files -m | xargs git add'
 alias gs='git status'
 alias gbs='git bulk status'
+alias gbd='git bulk diff'
+alias gbg='git bulk grep'
 alias git-unmerged='git branch -a --no-merged master'
 
 alias vess='/usr/share/vim/vim7*/macros/less.sh'
@@ -55,5 +57,3 @@ alias vess='/usr/share/vim/vim7*/macros/less.sh'
 #alias ppjson='perl -0007 -MJSON -ne "print to_json(from_json(\$_, {allow_nonref=>1}), {pretty=>1})"'
 
 alias nano='vim'
-
-alias recent-chats='find .purple/logs/jabber/*/*/*.html -mtime -1 | xargs ls -l'

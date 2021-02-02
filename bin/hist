@@ -112,14 +112,14 @@ then
 	then
 		GREP_COLORS="mt=" $GREPPER --with-filename "" * | $TAILER | $PAGER
 	else
-		$GREPPER --with-filename $GREP * | $TAILER | $PAGER
+		$GREPPER --with-filename "$GREP" * | $TAILER | $PAGER
 	fi
 else
 	if [ -z "$GREP" ]
 	then
 		cat $HIST_FILE | $CURRENT_SHELL | $GREPPER "" | $TAILER | $PAGER
 	else
-		cat $HIST_FILE | $CURRENT_SHELL | $GREPPER $GREP | $TAILER | $PAGER
+		cat $HIST_FILE | $CURRENT_SHELL | $GREPPER "$GREP" | $TAILER | $PAGER
 	fi
 fi
 exit $?

@@ -3,8 +3,10 @@ export VISUAL="vim"
 
 #path setup
 export PATH=$HOME/bin:$PATH
+export PATH="$HOME/repos/mkgeo/bin:$PATH"
+export PATH="$HOME/repos/csv2ndjson/bin:$PATH"
+export PATH="$HOME/repos/dtk/:$PATH"
 
-export PATH=~/repos/dtk/:$PATH
 export DTK_MODPATH=~/repos/dtk/modules
 
 case $SHELL in
@@ -35,11 +37,6 @@ case $SHELL in
 *)
    # assume something else
 esac
-
-if [ -n "$PS1" ]; then
-	# set the tab width to 4
-	tabs -4
-fi
 
 GREEN='\[\e[0;32m\]'
 GREENB='\[\e[32;1m\]'
