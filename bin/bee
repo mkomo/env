@@ -1,0 +1,5 @@
+#!/bin/bash
+
+CENTER=$1
+OTHERS=$2
+grep "^[$CENTER$OTHERS]*$CENTER[$CENTER$OTHERS]*$" /usr/share/dict/words | grep --color=none ....
