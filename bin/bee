@@ -2,4 +2,6 @@
 
 CENTER=$1
 OTHERS=$2
-grep "^[$CENTER$OTHERS]*$CENTER[$CENTER$OTHERS]*$" /usr/share/dict/words | grep --color=none ....
+grep "^[$CENTER$OTHERS]*$CENTER[$CENTER$OTHERS]*$" /usr/share/dict/words | \
+  grep --color=none .... | \
+  awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2-
