@@ -19,7 +19,7 @@ TAILER="tail -50"
 CURRENT_SHELL="cat"
 GREPPER="grep --color=always"
 
-while getopts "brzf:g:Aacn:li" OPTION
+while getopts "brzf:g:Aacn:lti" OPTION
 do
 	case $OPTION in
 		b)
@@ -98,6 +98,9 @@ export LAST_HISTORY_ENTRY="$hist_line"'
             ;;
 		l)
 			PAGER="less -R"
+            ;;
+		t)
+			PAGER="tail -n 50"
             ;;
 		i)
 			GREPPER="$GREPPER -i"
